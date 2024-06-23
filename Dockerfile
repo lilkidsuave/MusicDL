@@ -13,5 +13,11 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 # Copy the entire project directory into the container
 COPY . .
 
+# Make setup_settings.sh executable
+RUN chmod +x /app/setup_settings.sh
+
+CMD ["./setup_settings.sh"]
+
 ENTRYPOINT ["python", "app.py"]
+# Specify the command to run your application
 
