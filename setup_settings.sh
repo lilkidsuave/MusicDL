@@ -1,8 +1,17 @@
 #!/bin/bash
 
-QOBUZ_USERNAME="${1}"
-QOBUZ_PASSWORD="${2}"
-# Create or edit settings.json
+# Ensure required environment variables are set
+if [[ -z "$QOBUZ_USERNAME" ]]; then
+    echo "Error: QOBUZ_USERNAME environment variable not set"
+    exit 1
+fi
+
+if [[ -z "$QOBUZ_PASSWORD" ]]; then
+    echo "Error: QOBUZ_PASSWORD environment variable not set"
+    exit 1
+fi
+
+# Create or edit settings.json in the config directory
 echo '{
   "global": {
     "general": {
@@ -27,3 +36,6 @@ echo '{
     }
   }
 }' > /app/config/settings.json
+
+# Run the main application command
+exec "$@"
