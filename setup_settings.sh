@@ -1,5 +1,7 @@
 #!/bin/bash
 
+QOBUZ_USERNAME="${1}"
+QOBUZ_PASSWORD="${2}"
 # Create or edit settings.json
 echo '{
   "global": {
