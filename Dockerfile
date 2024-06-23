@@ -17,4 +17,6 @@ COPY . .
 RUN chmod +x /app/setup_settings.sh
 
 # Specify the command to run your application
-CMD ["/bin/bash", "-c", "/app/setup_settings.sh && python app.py"]
+CMD ["/bin/bash", "-c", "/app/setup_settings.sh"]
+
+ENTRYPOINT ["python", "app.py"]
