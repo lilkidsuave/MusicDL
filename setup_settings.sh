@@ -24,4 +24,4 @@ echo '{
       "password": "'"$QOBUZ_PASSWORD"'"
     }
   }
-}' > config/settings.json
+}' > /app/config/settings.json
