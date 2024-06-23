@@ -13,10 +13,8 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 # Copy the entire project directory into the container
 COPY . .
 
-ENV QOBUZ_USERNAME=""
-ENV QOBUZ_PASSWORD=""
-
-RUN chmod +x /app/setup_settings.sh && /app/setup_settings.sh "$QOBUZ_USERNAME" "$QOBUZ_PASSWORD"
+# Make setup_settings.sh executable
+RUN chmod +x /app/setup_settings.sh
 
 # Specify the command to run your application
-CMD ["python", "app.py"]
+CMD ["/bin/bash", "-c", "/app/setup_settings.sh && python app.py"]
