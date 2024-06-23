@@ -1,23 +1,23 @@
-# Use an official Python runtime as a parent image
+# Use a base image with Python
 FROM python:3.12-slim
 
-# Set the working directory in the container
+# Set working directory in the container
 WORKDIR /app
 
-# Copy the current directory contents into the container at /app
-COPY . /app
+# Copy requirements file
+COPY requirements.txt .
 
-# Install GCC and other dependencies
-RUN apt-get update && \
-    apt-get install -y gcc && \
-    pip install --upgrade pip && \
-    pip install -r requirements.txt
+# Install Python dependencies
+RUN pip install --upgrade pip && pip install -r requirements.txt
 
-# Make port 5000 available to the world outside this container
-EXPOSE 5000
+# Copy the entire project directory into the container
+COPY . .
 
-# Define environment variable
-ENV FLASK_APP=app.py
+# Copy script to create or edit settings.json
+COPY setup_settings.sh /app
 
-# Run app.py when the container launches
-CMD ["flask", "run", "--host=0.0.0.0"]
+# Run the script to generate or edit settings.json
+RUN chmod +x /app/setup_settings.sh && /app/setup_settings.sh
+
+# Specify the command to run your application
+CMD ["python", "app.py"]
