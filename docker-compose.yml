@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  musicdl:
+    image: ghcr.io/lilkidsuave/musicdl:alpha
+    environment:
+      - QOBUZ_USERNAME=${QOBUZ_USERNAME}
+      - QOBUZ_PASSWORD=${QOBUZ_PASSWORD}
+    
