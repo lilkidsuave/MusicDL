@@ -7,7 +7,12 @@ WORKDIR /app
 # Copy the current directory contents into the container at /app
 COPY . /app
 
+# Install GCC and other dependencies
+RUN apt-get update && \
+    apt-get install -y gcc libffi-dev libssl-dev && \
+    apt-get clean
 # Install the required packages
+
 RUN pip install -r requirements.txt
 
 # Make port 5000 available to the world outside this container
