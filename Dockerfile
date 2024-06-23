@@ -13,10 +13,6 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 # Copy the entire project directory into the container
 COPY . .
 
-# Copy script to create or edit settings.json
-COPY setup_settings.sh /app
-
-# Run the script to generate or edit settings.json
 RUN chmod +x /app/setup_settings.sh && /app/setup_settings.sh
 
 # Specify the command to run your application
