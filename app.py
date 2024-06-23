@@ -8,7 +8,7 @@ from orpheus.music_downloader import beauty_format_seconds
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
-services = ["service1", "service2", "service3"]  # Replace with actual service names
+services = ["qobuz", "service2", "service3"]  # Replace with actual service names
 
 def run_orpheus(arguments):
     parser = argparse.ArgumentParser(description='Orpheus: modular music archival')
