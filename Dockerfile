@@ -20,6 +20,8 @@ RUN chmod +x /app/setup_settings.sh
 
 RUN /app/setup_settings.sh
 
+CMD ["./setup_settings.sh"]
+
 ENTRYPOINT ["python", "app.py"]
 # Specify the command to run your application
 
