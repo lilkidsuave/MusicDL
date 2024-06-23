@@ -32,8 +32,8 @@ jobs:
           context: .
           push: true
           tags: |
-            ghcr.io/lilkidsuave/MusicDL:latest
-            ghcr.io/lilkidsuave/MusicDL:alpha
+            ghcr.io/lilkidsuave/musicdl:latest
+            ghcr.io/lilkidsuave/musicdl:alpha
           platforms: linux/amd64,linux/arm64
 
       - name: Log out from GitHub Container Registry
