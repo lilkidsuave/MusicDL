@@ -82,6 +82,19 @@ def run_orpheus(arguments):
     else:
         flash('Invalid mode.')
         return []
+@app.route('/download', methods=['POST'])
+def download():
+    service = request.form['service']
+    link = request.form['link']
+    
+    if service and link:
+        args = ['download', service, link]
+        results = run_orpheus(args)
+        flash('Download started successfully.')
+    else:
+        flash('Please provide both service and link.')
+
+    return redirect(url_for('index'))
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
