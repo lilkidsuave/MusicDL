@@ -71,8 +71,15 @@ def run_orpheus(arguments):
             link = args.arguments[2]
             if modulename in orpheus.module_list:
                 module = orpheus.load_module(modulename)
-                module.download(link)
-                return ["Download started"]
+                # Ensure that the module has the appropriate method for downloading
+                if hasattr(module, 'get_track_download'):
+                    download_info = module.get_track_download(link)
+                    # Implement the actual download logic here using download_info.file_url
+                    flash(f'Download URL: {download_info.file_url}')
+                    return ["Download started"]
+                else:
+                    flash(f'Module "{modulename}" does not support downloading.')
+                    return []
             else:
                 flash(f'Unknown module name "{modulename}".')
                 return []
@@ -82,6 +89,7 @@ def run_orpheus(arguments):
     else:
         flash('Invalid mode.')
         return []
+
 @app.route('/download', methods=['POST'])
 def download():
     service = request.form['service']
