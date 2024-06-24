@@ -1,44 +1,65 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Music Search</title>
+    <meta charset="UTF-8">
+    <title>Music Downloader</title>
 </head>
 <body>
-    <h1>Music Search</h1>
-    <form method="post">
+    <h1>Music Downloader</h1>
+
+    <form method="POST" action="/">
         <label for="service">Service:</label>
-        <select name="service" id="service">
+        <select id="service" name="service">
             {% for service in services %}
                 <option value="{{ service }}">{{ service }}</option>
             {% endfor %}
         </select>
-        <br>
+        
         <label for="search_type">Search Type:</label>
-        <select name="search_type" id="search_type">
+        <select id="search_type" name="search_type">
             <option value="track">Track</option>
             <option value="artist">Artist</option>
-            <option value="playlist">Playlist</option>
             <option value="album">Album</option>
+            <option value="playlist">Playlist</option>
         </select>
-        <br>
+        
         <label for="query">Query:</label>
-        <input type="text" id="query" name="query">
-        <br>
-        <input type="submit" value="Search">
+        <input type="text" id="query" name="query" required>
+        
+        <button type="submit">Search</button>
     </form>
-    <hr>
-    <h2>Results</h2>
+
+    <form method="POST" action="/download">
+        <label for="download_service">Service:</label>
+        <select id="download_service" name="service">
+            {% for service in services %}
+                <option value="{{ service }}">{{ service }}</option>
+            {% endfor %}
+        </select>
+        
+        <label for="link">Link:</label>
+        <input type="text" id="link" name="link" required>
+        
+        <button type="submit">Download</button>
+    </form>
+
+    {% if results %}
+        <h2>Results</h2>
+        <ul>
+            {% for index, result, item in results %}
+                <li>{{ result }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
-            {% for category, message in messages %}
-                <p>{{ message }}</p>
-            {% endfor %}
+            <ul class="flashes">
+                {% for category, message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
         {% endif %}
     {% endwith %}
-    <ul>
-        {% for result in results %}
-            <li>{{ result }}</li>
-        {% endfor %}
-    </ul>
 </body>
 </html>
