@@ -25,7 +25,7 @@ def run_orpheus(arguments):
 
     if not args.arguments:
         parser.print_help()
-        return
+        return []
 
     orpheus_mode = args.arguments[0].lower()
     if orpheus_mode == 'search':
@@ -57,13 +57,27 @@ def run_orpheus(arguments):
                         result = f'{str(index)}. {item.name} - {artists} {additional_details}'
                     else:
                         result = f'{str(index)}. {item.name} {additional_details}'
-                    results.append(result)
+                    results.append((index, result, item))
                 return results
             else:
                 flash(f'Unknown module name "{modulename}".')
                 return []
         else:
             flash('Search must be done as [search] [module] [track/artist/playlist/album] [query]')
+            return []
+    elif orpheus_mode == 'download':
+        if len(args.arguments) > 2:
+            modulename = args.arguments[1].lower()
+            link = args.arguments[2]
+            if modulename in orpheus.module_list:
+                module = orpheus.load_module(modulename)
+                module.download(link)
+                return ["Download started"]
+            else:
+                flash(f'Unknown module name "{modulename}".')
+                return []
+        else:
+            flash('Download must be done as [download] [module] [link]')
             return []
     else:
         flash('Invalid mode.')
