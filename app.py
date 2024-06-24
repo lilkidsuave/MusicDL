@@ -1,7 +1,7 @@
 import os
 import requests
 import tempfile
-from flask import Flask, request, render_template, redirect, url_for, flash
+from flask import Flask, request, render_template, redirect, url_for, flash, send_file
 from urllib.parse import quote as url_quote
 import argparse
 from orpheus.core import *
@@ -106,12 +106,16 @@ def download():
     
     if service and link:
         args = ['download', service, link]
-        results = run_orpheus(args)
-        flash('Download started successfully.')
+        temp_file = run_orpheus(args)
+        if temp_file:
+            return send_file(temp_file, as_attachment=True)
+        else:
+            flash('Download failed.')
     else:
         flash('Please provide both service and link.')
 
     return redirect(url_for('index'))
+
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
