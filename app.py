@@ -1,4 +1,6 @@
 import os
+import requests
+import tempfile
 from flask import Flask, request, render_template, redirect, url_for, flash
 from urllib.parse import quote as url_quote
 import argparse
@@ -9,6 +11,8 @@ app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
 services = ["qobuz", "service2", "service3"]  # Replace with actual service names
+
+
 
 def run_orpheus(arguments):
     parser = argparse.ArgumentParser(description='Orpheus: modular music archival')
@@ -74,9 +78,14 @@ def run_orpheus(arguments):
                 # Ensure that the module has the appropriate method for downloading
                 if hasattr(module, 'get_track_download'):
                     download_info = module.get_track_download(link)
-                    # Implement the actual download logic here using download_info.file_url
-                    flash(f'Download URL: {download_info.file_url}')
-                    return ["Download started"]
+                    # Download the file and save it to a temporary location
+                    response = requests.get(download_info.file_url, stream=True)
+                    temp_dir = tempfile.gettempdir()
+                    temp_file = os.path.join(temp_dir, os.path.basename(link))
+                    with open(temp_file, 'wb') as f:
+                        for chunk in response.iter_content(chunk_size=8192):
+                            f.write(chunk)
+                    return temp_file
                 else:
                     flash(f'Module "{modulename}" does not support downloading.')
                     return []
